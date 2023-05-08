@@ -2,55 +2,53 @@
 
 -- FUNCTION --
 
--- Change the customer of a rental
+-- Change the Sales Person assigned to a Car Sale
 
 SELECT *
-FROM rental;
+FROM car_sale;
 
-CREATE OR REPLACE FUNCTION change_customer(
-	_rental_id INTEGER,
-	new_customer INTEGER
+CREATE OR REPLACE FUNCTION update_sales_person(
+	_car_sale_id INTEGER,
+	_sales_id INTEGER
 )
 RETURNS void AS $$
 	BEGIN
-		UPDATE rental
-		SET customer_id = new_customer
-		WHERE rental_id = _rental_id;
+		UPDATE car_sale
+		SET sales_id = _sales_id
+		WHERE car_sale_id = _car_sale_id;
 	END;
 $$
 LANGUAGE plpgsql;
 
 SELECT *
-FROM rental;
+FROM car_sale;
 
-SELECT change_customer(11541, 341);
+SELECT update_sales_person(2, 1);
 
 
 -- PROCEDURE --
 
--- Add a city name
+-- Assign Mechanic to a Service Team
+
 
 SELECT *
-FROM country;
+FROM service_team;
 
-SELECT *
-FROM city;
-
-CREATE OR REPLACE PROCEDURE new_city (
-	_city_name VARCHAR(50),
-	_country_id INTEGER
+CREATE OR REPLACE PROCEDURE assign_mechanic (
+	_service_id INTEGER,
+	_mechanic_id INTEGER
 ) AS $$ 
 	BEGIN
-		INSERT INTO city (
-			city_name,
-			country_id
+		INSERT INTO service_team (
+			service_id,
+			mechanic_id
 		) VALUES (
-			_city_name,
-			_country_id
+			_service_id,
+			_mechanic_id
 		);
 		COMMIT;
 	END;
 $$
 LANGUAGE plpgsql; 
 
-CALL new_city('Manila', 75);
+CALL assign_mechanic(3, 1);
